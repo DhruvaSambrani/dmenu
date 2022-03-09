@@ -6,7 +6,7 @@ include config.mk
 SRC = drw.c dmenu.c stest.c util.c
 OBJ = $(SRC:.c=.o)
 
-all: options dmenu stest
+all: options dmenu stest scripts
 
 options:
 	@echo dmenu build options:
@@ -40,6 +40,20 @@ dist: clean
 	gzip dmenu-$(VERSION).tar
 	rm -rf dmenu-$(VERSION)
 
+scripts:
+	cp -f gtk_dmenu_run /usr/bin
+	cp -f emoji-chooser /usr/bin
+	cp -f passmenu /usr/bin
+	chmod 755 /usr/bin/gtk_dmenu_run
+	chmod 755 /usr/bin/emoji-chooser
+	chmod 755 /usr/bin/passmenu
+	
+uninstallscripts:
+		rm -f /usr/bin/gtk_dmenu_run\
+			/usr/bin/emoji-chooser\
+			/usr/bin/passmenu
+
+
 install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f dmenu dmenu_path dmenu_run stest $(DESTDIR)$(PREFIX)/bin
@@ -53,7 +67,7 @@ install: all
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/dmenu.1
 	chmod 644 $(DESTDIR)$(MANPREFIX)/man1/stest.1
 
-uninstall:
+uninstall: uninstallscripts
 	rm -f $(DESTDIR)$(PREFIX)/bin/dmenu\
 		$(DESTDIR)$(PREFIX)/bin/dmenu_path\
 		$(DESTDIR)$(PREFIX)/bin/dmenu_run\
