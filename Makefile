@@ -43,14 +43,17 @@ dist: clean
 scripts:
 	cp -f gtk_dmenu_run /usr/bin
 	cp -f emoji-chooser /usr/bin
+	cp -f todo /usr/bin
 	cp -f passmenu /usr/bin
 	chmod 755 /usr/bin/gtk_dmenu_run
 	chmod 755 /usr/bin/emoji-chooser
+	chmod 755 /usr/bin/todo
 	chmod 755 /usr/bin/passmenu
 	
 uninstallscripts:
 		rm -f /usr/bin/gtk_dmenu_run\
 			/usr/bin/emoji-chooser\
+			/usr/bin/todo\
 			/usr/bin/passmenu
 
 
