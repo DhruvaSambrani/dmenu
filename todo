@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 #
 # Write/remove a task to do later.
 #
@@ -11,18 +11,22 @@ touch "$file"
 height=$(wc -l "$file" | awk '{print $1}')
 prompt="Add/delete a task: "
 
-cmd=$(dmenu -l "$height" -p "$prompt" "$@" < "$file")
+cmd=$(sort -r "$file" | dmenu -l "$height" -p "$prompt" -i )
 while [ -n "$cmd" ]; do
- 	if grep -q "^$cmd\$" "$file"; then
-		grep -v "^$cmd\$" "$file" > "$file.$$"
-		mv "$file.$$" "$file"
-        height=$(( height - 1 ))
+  if grep -qF "$cmd" "$file"; then
+		grep -vF "$cmd" "$file" > "$file.new"
+		mv "$file.new" "$file"
+    (( height = height - 1 ))
  	else
-		echo "$cmd" >> "$file"
-		height=$(( height + 1 ))
+    if [[ "$(echo $cmd | tr -d \\n)" =~ "^\[[[:digit:]]\]" ]]; then
+      echo "$cmd" >> "$file"
+    else
+      echo "[0] $cmd" >> "$file"
+    fi
+    (( height = height + 1 ))
  	fi
 
-	cmd=$(dmenu -l "$height" -p "$prompt" "$@" < "$file")
+  cmd=$(sort -r "$file" | dmenu -l "$height" -p "$prompt" "$@" )
 done
 
 exit 0
