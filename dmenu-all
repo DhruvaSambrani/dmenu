@@ -1,0 +1,13 @@
+#! /bin/sh
+
+opt="$(echo -e "\$ term_command\n> desktop\n* pass\n. emoji\ns search" | dmenu -l 100)"
+act="$(echo $opt | tail -c+2)"
+echo $act
+case "$opt" in
+    \$*) dmenu_run -p "Open in Terminal" -it "$act";;
+    \>*) gtk_dmenu_run -p "Run" -it "$act";;
+    \**) passmenu -p "pass" -it "$act";;
+    .*) emoji-chooser -p "Emoji" -it "$act";;
+    s*) dmenu-websearch -p "websearch" -it "$act";;
+esac
+

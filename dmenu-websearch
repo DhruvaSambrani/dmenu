@@ -1,0 +1,12 @@
+#! /bin/sh
+
+search=$(echo -e "d\nyt\ngh" | dmenu "$@")
+act=$(echo $search | sed -E "s/.*?\ (.*)/\1/g")
+echo $search
+
+case "$search" in
+  d*) firefox "https://duckduckgo.com/?q=$act";;
+  yt*) firefox "https://www.youtube.com/results?search_query=$act";;
+  gh*) firefox "https://github.com/search?utf8=%E2%9C%93&q=$act";;
+esac
+
