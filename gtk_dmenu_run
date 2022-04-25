@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/bin/bash
 gtk-launch $( ls /usr/share/applications | dmenu "$@" ) &

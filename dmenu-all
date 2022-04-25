@@ -1,13 +1,27 @@
 #! /bin/sh
 
-opt="$(echo -e "\$ term_command\n> desktop\n* pass\n. emoji\ns search" | dmenu -l 100)"
-act="$(echo $opt | tail -c+2)"
-echo $act
+desktop=$(ls /usr/share/applications | sed -E "s/(.*)\.desktop/! \1/g")
+
+prefix=${PASSWORD_STORE_DIR-~/.password-store}
+password_files=( "$prefix"/**/*.gpg )
+password_files=( "${password_files[@]#"$prefix"/}" )
+password_files=( "${password_files[@]%.gpg}" )
+password=$(printf '%s\n' "${password_files[@]}" | sed -E "s/(.*)/@ \1/g")
+
+search="s d\ns yt\ns gh"
+
+emoji=$(emojify --list | tail -n +5 | sort | sed -E "s/(.*)/# \1/g")
+
+path=$(dmenu_path | sed -E "s/(.*)/\$ \1/g")
+
+opt="$(echo -e "$desktop\n$password\n$search\n$emoji\n$path" | dmenu -l 10 -i)"
+act="$(echo $opt | tail -c+3)"
+echo "$act"
 case "$opt" in
-    \$*) dmenu_run -p "Open in Terminal" -it "$act";;
-    \>*) gtk_dmenu_run -p "Run" -it "$act";;
-    \**) passmenu -p "pass" -it "$act";;
-    .*) emoji-chooser -p "Emoji" -it "$act";;
+    \!*) gtk_dmenu_run -p "Open app" -it "$act";;
+    \@*) passmenu -p "Pass" -it "$act";;
+    \#*) emoji-chooser -p "Emoji" -it "$act";;
+    \$*) dmenu_run -p "Open bg" -it "$act";;
     s*) dmenu-websearch -p "websearch" -it "$act";;
 esac
 

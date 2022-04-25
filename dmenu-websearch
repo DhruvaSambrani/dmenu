@@ -1,8 +1,8 @@
-#! /bin/sh
+#! /bin/bash
 
 search=$(echo -e "d\nyt\ngh" | dmenu "$@")
-act=$(echo $search | sed -E "s/.*?\ (.*)/\1/g")
-echo $search
+act=$(echo $search | cut -d' ' -f2-)
+echo $act
 
 case "$search" in
   d*) firefox "https://duckduckgo.com/?q=$act";;
