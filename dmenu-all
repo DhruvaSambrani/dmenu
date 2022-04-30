@@ -1,6 +1,8 @@
-#! /bin/sh
+#! /bin/bash
 
-desktop=$(ls /usr/share/applications | sed -E "s/(.*)\.desktop/! \1/g")
+shopt -s nullglob globstar
+
+desktop=$(ls /usr/share/applications | sed -E "s/(.*)\.desktop/> \1/g")
 
 prefix=${PASSWORD_STORE_DIR-~/.password-store}
 password_files=( "$prefix"/**/*.gpg )
@@ -18,7 +20,7 @@ opt="$(echo -e "$desktop\n$password\n$search\n$emoji\n$path" | dmenu -l 10 -i)"
 act="$(echo $opt | tail -c+3)"
 echo "$act"
 case "$opt" in
-    \!*) gtk_dmenu_run -p "Open app" -it "$act";;
+    \>*) gtk_dmenu_run -p "Open app" -it "$act";;
     \@*) passmenu -p "Pass" -it "$act";;
     \#*) emoji-chooser -p "Emoji" -it "$act";;
     \$*) dmenu_run -p "Open bg" -it "$act";;

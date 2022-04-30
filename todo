@@ -23,10 +23,11 @@ while [ -n "$cmd" ]; do
     else
       echo "[0] $cmd" >> "$file"
     fi
+    cmd=""
     (( height = height + 1 ))
  	fi
 
-  cmd=$(sort -r "$file" | dmenu -l "$height" -p "$prompt" "$@" )
+  cmd=$(sort -r "$file" | dmenu -l "$height" -p "$prompt" -it "$cmd" "$@" )
 done
 
 exit 0
