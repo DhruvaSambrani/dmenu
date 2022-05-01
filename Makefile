@@ -41,12 +41,14 @@ dist: clean
 	rm -rf dmenu-$(VERSION)
 
 scripts:
+	cp -f bluetoothctl-dmenu /usr/bin
 	cp -f dmenu-all /usr/bin
 	cp -f gtk_dmenu_run /usr/bin
 	cp -f emoji-chooser /usr/bin
 	cp -f todo /usr/bin
 	cp -f dmenu-websearch /usr/bin
 	cp -f passmenu /usr/bin
+	chmod 755 /usr/bin/bluetoothctl-dmenu
 	chmod 755 /usr/bin/dmenu-all
 	chmod 755 /usr/bin/gtk_dmenu_run
 	chmod 755 /usr/bin/emoji-chooser
@@ -55,11 +57,12 @@ scripts:
 	chmod 755 /usr/bin/passmenu
 	
 uninstallscripts:
-		rm -f /usr/bin/gtk_dmenu_run\
+		rm -f /usr/bin/bluetoothctl-dmenu\
+			/usr/bin/dmenu-all\
+			usr/bin/gtk_dmenu_run
 			/usr/bin/emoji-chooser\
-			/usr/bin/dmenu-websearch\
-			/usr/bin/all\
 			/usr/bin/todo\
+			/usr/bin/dmenu-websearch\
 			/usr/bin/passmenu
 
 
